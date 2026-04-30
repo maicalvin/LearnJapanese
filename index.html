@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tabiji — Japanese for Travel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ============================================================
+       SCREEN: Welcome / Level Selection
+  ============================================================ -->
+  <div id="screen-welcome" class="screen active">
+    <div class="welcome-bg"></div>
+    <div class="welcome-content">
+      <div class="app-logo">
+        <span class="logo-kanji">旅</span>
+        <div class="logo-text">
+          <h1>Tabiji</h1>
+          <p>Japanese for Travel</p>
+        </div>
+      </div>
+
+      <div class="welcome-tagline">
+        <p>Learn the phrases you'll actually use in Japan.</p>
+        <p class="sub">Speak confidently from day one.</p>
+      </div>
+
+      <div class="level-selection">
+        <h2>Choose your level</h2>
+        <div class="level-cards">
+
+          <button class="level-card" data-level="beginner">
+            <span class="level-icon">🌱</span>
+            <span class="level-name">Beginner</span>
+            <span class="level-desc">No Japanese knowledge. Start from zero.</span>
+            <span class="level-tag">Romaji included</span>
+          </button>
+
+          <button class="level-card" data-level="basic">
+            <span class="level-icon">🌿</span>
+            <span class="level-name">Basic</span>
+            <span class="level-desc">Can read some hiragana/katakana.</span>
+            <span class="level-tag">Kana + Romaji</span>
+          </button>
+
+          <button class="level-card" data-level="intermediate">
+            <span class="level-icon">🌳</span>
+            <span class="level-name">Intermediate</span>
+            <span class="level-desc">Simple conversations. Know basic phrases.</span>
+            <span class="level-tag">Kanji + Kana</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: Home / Dashboard
+  ============================================================ -->
+  <div id="screen-home" class="screen">
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-kanji-sm">旅</span>
+        <span class="header-title">Tabiji</span>
+      </div>
+      <div class="header-right">
+        <span class="level-badge" id="header-level-badge">Beginner</span>
+        <button class="icon-btn" id="btn-change-level" title="Change level">⚙️</button>
+      </div>
+    </header>
+
+    <main class="home-main">
+      <div class="greeting-card">
+        <p class="greeting-jp" id="greeting-jp">いってらっしゃい！</p>
+        <p class="greeting-en">Have a great trip!</p>
+      </div>
+
+      <div class="progress-overview">
+        <h3>Your Progress</h3>
+        <div class="progress-stats">
+          <div class="stat-box">
+            <span class="stat-num" id="stat-modules">0</span>
+            <span class="stat-label">Modules Done</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num" id="stat-phrases">0</span>
+            <span class="stat-label">Phrases Learned</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num" id="stat-words">0</span>
+            <span class="stat-label">Words Studied</span>
+          </div>
+        </div>
+        <div class="overall-progress">
+          <div class="progress-bar-label">
+            <span>Overall</span>
+            <span id="overall-pct">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="overall-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modules-section">
+        <h3>Travel Modules</h3>
+        <div class="modules-grid" id="modules-grid">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <div class="vocab-section">
+        <h3>Vocabulary Practice</h3>
+        <button class="btn-primary full-width" id="btn-open-vocab">Browse 1000 Travel Words →</button>
+      </div>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="screen-home">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" data-screen="screen-vocab">
+        <span class="nav-icon">📖</span>
+        <span>Vocab</span>
+      </button>
+      <button class="nav-btn" data-screen="screen-voice">
+        <span class="nav-icon">🎤</span>
+        <span>Practice</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: Lesson / Module View
+  ============================================================ -->
+  <div id="screen-lesson" class="screen">
+    <header class="app-header">
+      <button class="icon-btn back-btn" id="btn-lesson-back">←</button>
+      <span class="header-title" id="lesson-header-title">Lesson</span>
+      <span class="lesson-progress-text" id="lesson-progress-text">1 / 10</span>
+    </header>
+
+    <div class="lesson-progress-bar-track">
+      <div class="lesson-progress-bar-fill" id="lesson-progress-bar"></div>
+    </div>
+
+    <main class="lesson-main" id="lesson-main">
+      <!-- Phrase Card -->
+      <div class="phrase-card" id="phrase-card">
+
+        <div class="phrase-scenario-badge" id="phrase-scenario">Airport</div>
+
+        <div class="phrase-japanese" id="phrase-japanese">
+          <span class="phrase-kanji" id="phrase-kanji">パスポートを見せてください。</span>
+          <span class="phrase-romaji" id="phrase-romaji">Pasupōto o misete kudasai.</span>
+        </div>
+
+        <div class="phrase-english" id="phrase-english">
+          Please show me your passport.
+        </div>
+
+        <!-- Word Breakdown -->
+        <div class="breakdown-section" id="breakdown-section">
+          <button class="breakdown-toggle" id="breakdown-toggle">
+            <span class="breakdown-toggle-icon">⊞</span>
+            Word-by-word breakdown
+          </button>
+          <div class="breakdown-chips" id="breakdown-chips" style="display:none">
+            <!-- populated by JS -->
+          </div>
+          <!-- Inline word detail card -->
+          <div class="word-detail-card" id="word-detail-card" style="display:none">
+            <button class="word-detail-close" id="word-detail-close">✕</button>
+            <div class="wdc-japanese" id="wdc-japanese"></div>
+            <div class="wdc-kana"     id="wdc-kana"></div>
+            <div class="wdc-romaji"   id="wdc-romaji"></div>
+            <div class="wdc-english"  id="wdc-english"></div>
+            <div class="wdc-type"     id="wdc-type"></div>
+          </div>
+        </div>
+
+        <div class="phrase-audio-row">
+          <button class="btn-play-audio" id="btn-play-phrase" title="Play pronunciation">
+            <span class="play-icon">▶</span>
+            <span>Listen</span>
+          </button>
+          <button class="btn-voice-practice" id="btn-voice-practice-phrase" title="Practice speaking">
+            <span>🎤 Speak</span>
+          </button>
+        </div>
+
+        <div class="cultural-tip" id="cultural-tip">
+          <span class="tip-icon">💡</span>
+          <span id="tip-text">Politely bow slightly when handing over documents in Japan.</span>
+        </div>
+
+      </div>
+
+      <!-- Navigation between phrases -->
+      <div class="phrase-nav">
+        <button class="btn-secondary" id="btn-prev-phrase">← Prev</button>
+        <div class="phrase-dots" id="phrase-dots"></div>
+        <button class="btn-primary" id="btn-next-phrase">Next →</button>
+      </div>
+
+      <!-- Phrases list toggle -->
+      <button class="btn-text" id="btn-show-all-phrases">Show all phrases in this lesson ↓</button>
+      <div class="phrase-list-panel" id="phrase-list-panel" style="display:none">
+        <!-- populated by JS -->
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: Vocabulary Browser
+  ============================================================ -->
+  <div id="screen-vocab" class="screen">
+    <header class="app-header">
+      <button class="icon-btn back-btn" id="btn-vocab-back">←</button>
+      <span class="header-title">Vocabulary</span>
+      <span class="vocab-count-badge" id="vocab-count-badge">1000 words</span>
+    </header>
+
+    <div class="vocab-controls">
+      <input type="text" class="search-input" id="vocab-search" placeholder="Search words..." />
+      <div class="category-tabs" id="category-tabs">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <main class="vocab-main">
+      <div class="vocab-list" id="vocab-list">
+        <!-- populated by JS -->
+      </div>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-btn" data-screen="screen-home">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn active" data-screen="screen-vocab">
+        <span class="nav-icon">📖</span>
+        <span>Vocab</span>
+      </button>
+      <button class="nav-btn" data-screen="screen-voice">
+        <span class="nav-icon">🎤</span>
+        <span>Practice</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: Voice Practice
+  ============================================================ -->
+  <div id="screen-voice" class="screen">
+    <header class="app-header">
+      <button class="icon-btn back-btn" id="btn-voice-back">←</button>
+      <span class="header-title">Pronunciation Practice</span>
+    </header>
+
+    <main class="voice-main">
+
+      <div class="voice-phrase-selector">
+        <label>Choose a phrase to practice:</label>
+        <select id="voice-phrase-select" class="phrase-select">
+          <!-- populated by JS -->
+        </select>
+      </div>
+
+      <div class="voice-card">
+        <div class="vc-japanese" id="vc-japanese">ありがとうございます。</div>
+        <div class="vc-romaji" id="vc-romaji">Arigatō gozaimasu.</div>
+        <div class="vc-english" id="vc-english">Thank you very much.</div>
+
+        <div class="vc-buttons">
+          <button class="btn-play-audio large" id="btn-vc-play">
+            ▶ Hear Native Pronunciation
+          </button>
+          <button class="btn-record" id="btn-vc-record">
+            🎤 Hold to Record
+          </button>
+        </div>
+
+        <div class="vc-recording-indicator" id="vc-recording-indicator" style="display:none">
+          <div class="pulse-ring"></div>
+          <span>Listening… speak now</span>
+        </div>
+      </div>
+
+      <!-- Feedback Panel -->
+      <div class="feedback-panel" id="feedback-panel" style="display:none">
+        <h3>Pronunciation Feedback</h3>
+
+        <div class="score-circle-wrap">
+          <svg class="score-circle" viewBox="0 0 100 100">
+            <circle class="score-bg" cx="50" cy="50" r="44"/>
+            <circle class="score-fg" id="score-arc" cx="50" cy="50" r="44"
+              stroke-dasharray="0 276.46" stroke-dashoffset="0"/>
+          </svg>
+          <div class="score-value" id="score-value">--</div>
+          <div class="score-label">Accuracy</div>
+        </div>
+
+        <div class="feedback-transcript">
+          <label>You said:</label>
+          <div class="transcript-box" id="transcript-box">—</div>
+        </div>
+
+        <div class="feedback-highlights" id="feedback-highlights">
+          <!-- syllable-level highlights injected here -->
+        </div>
+
+        <div class="feedback-tips" id="feedback-tips">
+          <!-- tips injected here -->
+        </div>
+
+        <button class="btn-primary full-width" id="btn-try-again">Try Again</button>
+      </div>
+
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-btn" data-screen="screen-home">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" data-screen="screen-vocab">
+        <span class="nav-icon">📖</span>
+        <span>Vocab</span>
+      </button>
+      <button class="nav-btn active" data-screen="screen-voice">
+        <span class="nav-icon">🎤</span>
+        <span>Practice</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       MODAL: Vocab Word Detail
+  ============================================================ -->
+  <div class="modal-overlay" id="modal-overlay" style="display:none">
+    <div class="modal-card" id="modal-card">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-japanese" id="modal-japanese"></div>
+      <div class="modal-romaji" id="modal-romaji"></div>
+      <div class="modal-english" id="modal-english"></div>
+      <div class="modal-category" id="modal-category"></div>
+      <div class="modal-example">
+        <label>Example sentence:</label>
+        <p class="modal-example-jp" id="modal-example-jp"></p>
+        <p class="modal-example-rom" id="modal-example-rom"></p>
+        <p class="modal-example-en" id="modal-example-en"></p>
+      </div>
+      <button class="btn-play-audio full-width" id="modal-play-audio">▶ Play Pronunciation</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST Notification
+  ============================================================ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="data/vocabulary.js"></script>
+  <script src="data/lessons.js"></script>
+  <script src="voice.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
